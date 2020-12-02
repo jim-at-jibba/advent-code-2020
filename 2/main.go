@@ -57,23 +57,32 @@ func formatPasswordString(p string) deconstructedPassword {
 	check(err)
 	max, err := strconv.Atoi(maxMin[1])
 	check(err)
-	match := strings.Split(partsSlice[1], ":")
-	return deconstructedPassword{max: max, min: min, match: match[0], password: partsSlice[2]}
+	match := string(partsSlice[1][0])
+	return deconstructedPassword{max: max, min: min, match: match, password: partsSlice[2]}
 }
 
 func checkPasswordValidity(passwords []deconstructedPassword) {
-	// tries 221
-	// 1. check password has match in it
-	// 2. check
-
 	correct := []deconstructedPassword{}
 
+	// PART 1
+	// for _, pw := range passwords {
+
+	// 	count := strings.Count(pw.password, pw.match)
+	// 	//correct = append(correct, pw)
+	// 	if (count >= pw.min) && (count <= pw.max) {
+	// 		fmt.Printf("%v %v %v min: %v max: %v\n", pw.password, pw.match, strings.Count(pw.password, pw.match), pw.min, pw.max)
+	// 		correct = append(correct, pw)
+	// 	}
+	// }
+
+	// PART 2
 	for _, pw := range passwords {
 
-		count := strings.Count(pw.password, pw.match)
-		//correct = append(correct, pw)
-		if count >= pw.min && count <= pw.max {
-			fmt.Printf("%v %v %v min: %v max: %v\n", pw.password, pw.match, strings.Count(pw.password, pw.match), pw.min, pw.max)
+		// This is confusing as FUCK - this is:
+		// if password char at min == match &&
+		// password char at max != match
+		if (string(pw.password[pw.min-1]) == pw.match) != (string(pw.password[pw.max-1]) == pw.match) {
+			fmt.Printf("%v match: %v min: %v max: %v min: %v max: %v\n", pw.password, pw.match, string(pw.password[pw.min-1]), string(pw.password[pw.max-1]), pw.min, pw.max)
 			correct = append(correct, pw)
 		}
 	}
